@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   #Trigger the workflow on push from the master/main branch
   push:
-    branches: [ master]
+    branches: [ master ]
 jobs:
   # Build job
   build:
@@ -17,4 +17,4 @@ jobs:
     # Check-out your repository
     - uses: actions/checkout@v3
     - name: Run a one-line script
-    run: echo "Continuous Integration"
+      run: echo "Continuous Integration"

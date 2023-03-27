@@ -7,6 +7,7 @@ on:
     branches: [ master]
 env: 
   REGISTRY: ghcr.io
+
 jobs:
   #Test's job
   tests:
@@ -66,23 +67,24 @@ jobs:
           path: staging
 
   #Deploy to GHCR
-  push-image-gchr: #this may be wrong consider -ghcr
-    needs: build
-    name: Deploy Images to GHCR
-    runs-on: ununtu-latest
-    steps:
-      - name: 'Checkout Github Action'
-        uses: actions/checkout@v3
+  push-image-ghcr: #this may be wrong consider -ghcr
+        needs: build
+        name: Deploy Images to GHCR
+        runs-on: ununtu-latest
+        steps:
+          - name: 'Checkout Github Action'
+            uses: actions/checkout@v3
 
-      - name: 'Login to Github Container Registry'
-        uses: docker/login-action@v2
-        with:
-          registry: ${{env.REGISTRY}}
-          username: ${{github.actor}}
-          password: ${{secrets.GITHUB_TOKEN}}
-          #Log out from the Docker registry at the end of the job
-          logout: true
+          - name: 'Login to Github Container Registry'
+            uses: docker/login-action@v2
+            with:
+              registry: ${{env.REGISTRY}}
+              username: ${{github.actor}}
+              password: ${{secrets.GITHUB_TOKEN}}
+              #Log out from the Docker registry at the end of the job
+              logout: true
 
-      - name: 'Build the Docker Image'
-        run: docker build . --tag ghcr.io/${{github.actor}}/devops-demo:latest
-             docker push ghcr.io/${{github.actor}}/devops-demo:latest
+          - name: 'Build the Docker Image'
+            run: |
+              docker build . --tag ghcr.io/${{github.actor}}/devops-demo:latest
+              docker push ghcr.io/${{github.actor}}/devops-demo:latest
